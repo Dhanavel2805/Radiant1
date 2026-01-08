@@ -48,18 +48,40 @@ for index, row in df.iterrows():
         value_elem.text = ET.CDATA(value)
 
 # ----------------------------
-# Output XML file
+# Output XML file (Save in 2 places)
 # ----------------------------
 base_name = os.path.splitext(os.path.basename(excel_file))[0]
 today_date = datetime.now().strftime("%Y-%m-%d")
-output_file = f"{base_name}_{today_date}.xml"
+output_file_name = f"{base_name}_{today_date}.xml"
+
+# Get Excel directory
+excel_dir = os.path.dirname(os.path.abspath(excel_file))
+
+# Path 1: Same directory
+output_path_1 = os.path.join(excel_dir, output_file_name)
+
+# Path 2: Result folder
+result_dir = os.path.join(excel_dir, "Result")
+os.makedirs(result_dir, exist_ok=True)
+output_path_2 = os.path.join(result_dir, output_file_name)
 
 tree = ET.ElementTree(root)
+
+# Write to both locations
 tree.write(
-    output_file,
+    output_path_1,
     encoding="utf-8",
     xml_declaration=True,
     pretty_print=True
 )
 
-print(f"Success! XML generated: {output_file}")
+tree.write(
+    output_path_2,
+    encoding="utf-8",
+    xml_declaration=True,
+    pretty_print=True
+)
+
+print("Success! XML generated in two locations:")
+print(f"1️⃣ {output_path_1}")
+print(f"2️⃣ {output_path_2}")
