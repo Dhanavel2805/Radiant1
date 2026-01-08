@@ -8,6 +8,15 @@ rename UPLOAD_FILE "%UPLOAD_FILE%"
 REM Verify file is present 
 dir
 
+REM Delete all files inside Result folder BEFORE running Python
+if exist Result (
+    echo Cleaning Result folder...
+    del /q Result\*
+) else (
+    mkdir Result
+)
+
+
 REM Run Python conversion script
 python excel_to_xml.py "%UPLOAD_FILE%"
 
